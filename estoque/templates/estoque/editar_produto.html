@@ -6,14 +6,64 @@
     <title>Editar Produto</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+    <header>
+        <nav class="navbar navbar-dark bg-dark fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'listar_produtos' %}">📦 Estocaí</a>
+                <a href="{% url 'cadastrar_produto' %}" class="btn btn-success">➕ Novo Produto</a>
+            </div>
+        </nav>
+        <div class="mt-5"></div> <!-- Espaço para compensar a navbar fixa -->
+    </header>
 <body>
+
+    <div style="padding-top: 10px;"></div>
+    
+    
     <div class="container mt-5">
         <h1 class="text-center">Editar Produto: {{ produto.nome }}</h1>
-        <form method="post" class="card p-4">
+        <form method="post" class="card p-4 shadow-sm">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-            <a href="{% url 'listar_produtos' %}" class="btn btn-secondary">Cancelar</a>
+            
+            <!-- Campo de Categoria -->
+            <div class="mb-3">
+                <label class="form-label">Categoria</label>
+                {{ form.categoria }}
+            </div>
+        
+            <!-- Campo de Nome -->
+            <div class="mb-3">
+                <label class="form-label">Nome do Produto</label>
+                {{ form.nome }}
+            </div>
+        
+            <!-- Quantidade em Estoque e Quantidade por Pacote (lado a lado) -->
+            <div class="row">
+                <div class="col-md-6 col-12 mb-3">
+                    <label class="form-label">Qtd. Estoque</label>
+                    {{ form.quantidade_estoque }}
+                </div>
+                <div class="col-md-6 col-12 mb-3">
+                    <label class="form-label">Qtd. Pacote</label>
+                    {{ form.quantidade_pacote }}
+                </div>
+            </div>
+        
+            <!-- Preço de Compra e Margem de Lucro (lado a lado) -->
+            <div class="row">
+                <div class="col-md-6 col-12 mb-3">
+                    <label class="form-label">Preço de Compra</label>
+                    {{ form.preco_compra }}
+                </div>
+                <div class="col-md-6 col-12 mb-3">
+                    <label class="form-label">Margem de Lucro (%)</label>
+                    {{ form.margem_lucro }}
+                </div>
+            </div>
+        
+            <!-- Botões -->
+            <button type="submit" class="btn btn-primary w-100">Salvar</button>
+            <a href="{% url 'listar_produtos' %}" class="btn btn-secondary w-100 mt-2">Cancelar</a>
         </form>
     </div>
 </body>

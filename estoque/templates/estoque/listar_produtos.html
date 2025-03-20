@@ -7,36 +7,45 @@
     <title>Lista de Produtos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
+    <header>
+        <nav class="navbar navbar-dark bg-dark fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'listar_produtos' %}">📦 Estocaí</a>
+                <a href="{% url 'cadastrar_produto' %}" class="btn btn-success"> Novo Produto</a>
+            </div>
+        </nav>
+    </header>
 <body>
+    <div style="padding-top: 10px;"></div>
+    <div class="mt-5"></div> <!-- Espaço para compensar a navbar fixa -->
     <div class="conteiner mt-5">
         <h1 class="text-center"> Lista de Produtos</h1>
-        <div class="text-end mb-3">
-            <a href="{% url 'cadastrar_produto' %}" class="btn btn-success">Cadastrar Novo Produto</a>
-        </div>
 
+
+<!-- Para telas grandes (PC) -->
+
+<div class="container">
+    <div class="table-responsive">
         <form method="GET" action="{% url 'listar_produtos' %}" class="mb-3 d-flex">
             <input type="text" name="q" class="form-control me-2" placeholder="Buscar produto..." value="{{ query }}">
             <button type="submit" class="btn btn-primary">Buscar</button>
         </form>
-        
-        <table class="table table-striped table bordered">
-            <thead class="table dark">
+        <table class="table table-striped table-bordered text-center">
+            <thead class="table-dark">
                 <tr>
                     <th>Categoria</th>
                     <th>Nome</th>
-                    <th>Quantidade em Estoque</th>
-                    <th>Quantidade por Pacote</th>
-                    <th>Preço de Compra</th>
-                    <th>Margem de Lucro (%)</th>
-                    <th>Preço de Venda</th>
+                    <th>Qtd. Estoque</th>
+                    <th>Qtd. Pacote</th>
+                    <th>Preço Compra</th>
+                    <th>Margem (%)</th>
+                    <th>Preço Venda</th>
                     <th>Ações</th>
-
                 </tr>
             </thead>
             <tbody>
                 {% for produto in page_obj %}
-                <tr>
+                <tr class="{% if produto.quantidade_estoque < 10 %}table-danger{% endif %}">
                     <td>{{ produto.categoria }}</td>
                     <td>{{ produto.nome }}</td>
                     <td>{{ produto.quantidade_estoque }}</td>
@@ -45,8 +54,8 @@
                     <td>{{ produto.margem_lucro }}%</td>
                     <td>R$ {{ produto.preco_venda }}</td>
                     <td>
-                        <a href="{% url 'editar_produto' produto.id %}" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="{% url 'excluir_produto' produto.id %}" class="btn btn-danger btn-sm">Excluir</a>
+                        <a href="{% url 'editar_produto' produto.id %}" class="btn btn-warning btn-sm">✏️</a>
+                        <a href="{% url 'excluir_produto' produto.id %}" class="btn btn-danger btn-sm">🗑️</a>
                     </td>
                 </tr>
                 {% empty %}
@@ -56,6 +65,35 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+</div>
+
+<!-- Para telas pequenas (Mobile) -->
+<!-- Para telas pequenas (Mobile) -->
+<div class="d-md-none">
+    {% for produto in page_obj %}
+    <div class="card border {% if produto.quantidade_estoque < 10 %}border-danger{% endif %} mb-2">
+        <div class="card-body p-2">
+            <h6 class="card-title mb-1"><strong>{{ produto.nome }}</strong></h6>
+            <p class="mb-1"><small><strong>Categoria:</strong> {{ produto.categoria }}</small></p>
+            <p class="mb-1"><small><strong>Qtd. Estoque:</strong> {{ produto.quantidade_estoque }}</small></p>
+            <p class="mb-1"><small><strong>Qtd. Pacote:</strong> {{ produto.quantidade_pacote }}</small></p>
+            <p class="mb-1"><small><strong>Preço Compra:</strong> R$ {{ produto.preco_compra }}</small></p>
+            <p class="mb-1"><small><strong>Margem Lucro:</strong> {{ produto.margem_lucro }}%</small></p>
+            <p class="mb-1"><small><strong>Preço Venda:</strong> R$ {{ produto.preco_venda }}</small></p>
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'editar_produto' produto.id %}" class="btn btn-warning btn-sm px-2 py-1">✏️</a>
+                <a href="{% url 'excluir_produto' produto.id %}" class="btn btn-danger btn-sm px-2 py-1">🗑️</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-center">Nenhum produto encontrado.</p>
+    {% endfor %}
+</div>
+                </tbody>
+            </table>
+        </div>
         <nav>
             <ul class="pagination justify-content-center">
                 {% if page_obj.has_previous %}
