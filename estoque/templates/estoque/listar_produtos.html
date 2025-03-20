@@ -14,7 +14,7 @@
         <div class="text-end mb-3">
             <a href="{% url 'cadastrar_produto' %}" class="btn btn-success">Cadastrar Novo Produto</a>
         </div>
-        
+
         <form method="GET" action="{% url 'listar_produtos' %}" class="mb-3 d-flex">
             <input type="text" name="q" class="form-control me-2" placeholder="Buscar produto..." value="{{ query }}">
             <button type="submit" class="btn btn-primary">Buscar</button>
@@ -35,7 +35,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for produto in produtos %}
+                {% for produto in page_obj %}
                 <tr>
                     <td>{{ produto.categoria }}</td>
                     <td>{{ produto.nome }}</td>
@@ -51,12 +51,36 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="7" class="text-center">Nenhum produto cadastrado</td>
+                    <td colspan="8" class="text-center">Nenhum produto encontrado.</td>
                 </tr>
-                {%endfor%}
+                {% endfor %}
             </tbody>
-
         </table>
+        <nav>
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1&q={{ query }}">&laquo; Primeira</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ query }}">Anterior</a>
+                    </li>
+                {% endif %}
+        
+                <li class="page-item disabled">
+                    <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+                </li>
+        
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ query }}">Próxima</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&q={{ query }}">Última &raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
 
     </div>
     

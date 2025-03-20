@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.core.paginator import Paginator
 from .models import Produto
 from .forms import ProdutoForm
 # Create your views here.
@@ -8,11 +8,16 @@ def listar_produtos(request):
     query = request.GET.get('q')  # Obtém o termo de busca
     
     if query:
-        produtos = Produto.objects.filter(nome__icontains=query)  # Filtra por nome
+        produtos = Produto.objects.filter(nome__icontains=query)
     else:
         produtos = Produto.objects.all()
 
-    return render(request, 'estoque/listar_produtos.html', {'produtos': produtos, 'query': query})
+    # Paginação: 10 produtos por página
+    paginator = Paginator(produtos, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'estoque/listar_produtos.html', {'page_obj': page_obj, 'query': query})
 
 def cadastrar_produto(request):
     if request.method == "POST":
