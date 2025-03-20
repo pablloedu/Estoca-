@@ -12,6 +12,18 @@ def listar_produtos(request):
     else:
         produtos = Produto.objects.all()
 
+    # Cálculo do preço unitário e preço final para cada produto
+    for produto in produtos:
+        # Cálculo do preço unitário
+        preco_unitario = produto.preco_compra / produto.quantidade_pacote if produto.quantidade_pacote != 0 else 0
+        
+        # Cálculo do preço final com margem de lucro
+        preco_final = preco_unitario * (1 + produto.margem_lucro / 100)
+        
+        # Adicionar os valores ao produto
+        produto.preco_unitario = round(preco_unitario, 2)
+        produto.preco_final = round(preco_final, 2)
+
     # Paginação: 10 produtos por página
     paginator = Paginator(produtos, 10)
     page_number = request.GET.get('page')

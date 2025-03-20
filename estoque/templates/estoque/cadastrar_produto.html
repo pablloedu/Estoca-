@@ -68,24 +68,6 @@
     </div>
 </body>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        let precoCompraInput = document.getElementById("id_preco_compra");
-        let margemLucroInput = document.getElementById("id_margem_lucro");
-        let precoVendaDisplay = document.createElement("p");
-        precoVendaDisplay.classList.add("fw-bold");
-        precoCompraInput.parentNode.appendChild(precoVendaDisplay);
-    
-        function calcularPrecoVenda() {
-            let precoCompra = parseFloat(precoCompraInput.value) || 0;
-            let margemLucro = parseFloat(margemLucroInput.value) || 0;
-            let precoVenda = precoCompra * (1 + margemLucro / 100);
-            precoVendaDisplay.innerText = `Preço de Venda Estimado: R$ ${precoVenda.toFixed(2)}`;
-        }
-    
-        precoCompraInput.addEventListener("input", calcularPrecoVenda);
-        margemLucroInput.addEventListener("input", calcularPrecoVenda);
-    });
-    </script>
+
 
 </html>
