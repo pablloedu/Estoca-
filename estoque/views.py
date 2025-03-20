@@ -5,8 +5,14 @@ from .forms import ProdutoForm
 # Create your views here.
 
 def listar_produtos(request):
-    produtos = Produto.objects.all()
-    return render (request, 'estoque/listar_produtos.html', {'produtos': produtos}) 
+    query = request.GET.get('q')  # Obtém o termo de busca
+    
+    if query:
+        produtos = Produto.objects.filter(nome__icontains=query)  # Filtra por nome
+    else:
+        produtos = Produto.objects.all()
+
+    return render(request, 'estoque/listar_produtos.html', {'produtos': produtos, 'query': query})
 
 def cadastrar_produto(request):
     if request.method == "POST":
