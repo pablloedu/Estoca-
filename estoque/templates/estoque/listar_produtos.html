@@ -24,6 +24,7 @@
                     <th>Preço de Compra</th>
                     <th>Margem de Lucro (%)</th>
                     <th>Preço de Venda</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,6 +37,9 @@
                     <td>{{ produto.preco_compra}}</td>
                     <td>{{ produto.margem_lucro}}</td>
                     <td>{{ produto.preco_venda}}</td>
+                    <td>
+                        <a href="{% url 'editar_produto' produto.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>

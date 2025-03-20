@@ -18,3 +18,16 @@ def cadastrar_produto(request):
         form = ProdutoForm()
     return render(request, 'estoque/cadastrar_produto.html', {'form': form})
 
+def editar_produto(request, produto_id):
+    produto = get_object_or_404(Produto, id=produto_id)
+
+    if request.method == "POST":
+        form = ProdutoForm(request.POST, instance=produto)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_produtos')
+    else:
+        form = ProdutoForm(instance=produto)
+
+    return render(request, 'estoque/editar_produto.html', {'form': form, 'produto': produto})
+
