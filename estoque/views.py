@@ -31,3 +31,11 @@ def editar_produto(request, produto_id):
 
     return render(request, 'estoque/editar_produto.html', {'form': form, 'produto': produto})
 
+def excluir_produto(request, produto_id):
+    produto = get_object_or_404(Produto, id=produto_id)
+    if request.method == "POST":
+        produto.delete()
+        return redirect('listar_produtos')
+
+    return render(request, 'estoque/excluir_produto.html', {'produto': produto})
+
