@@ -52,7 +52,7 @@
                         <td>{{ produto.quantidade_pacote }}</td>
                         <td>R$ {{ produto.preco_compra }}</td>
                         <td>{{ produto.margem_lucro }}%</td>
-                        <td>R$ {{ produto.preco_venda }}</td>
+                        <td>R$ {{ produto.preco_final }}</td>
                         <td>
                             <a href="{% url 'editar_produto' produto.id %}" class="btn btn-warning btn-sm">✏️</a>
                             <a href="{% url 'excluir_produto' produto.id %}" class="btn btn-danger btn-sm">🗑️</a>
